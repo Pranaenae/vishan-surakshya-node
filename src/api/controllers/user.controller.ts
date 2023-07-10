@@ -1,11 +1,20 @@
 import { Request, Response } from "express";
 import { userService } from "../services/index.service";
+import { AppError } from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 
-const register = catchAsync(async (req: Request, res: Response) => {
-  //sample
-  //   const user = await userService.createUser(req.body);
-  //   const tokens = await tokenService.generateAuthTokens(user);
-  //   res.status(httpStatus.CREATED).send({ user, tokens });
-  //   const x = await userService.create();
+export const register = catchAsync(async (req: Request, res: Response) => {
+  const result: any = await userService.createUser(req.body);
+  console.log({ result });
+  if (!result) {
+    throw new AppError(404, "Error In User Credential");
+  }
+  res
+    .status(200)
+    .json({ message: "User created successfully.", success: true, result });
+});
+
+export const test = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.test();
+  res.send(result);
 });

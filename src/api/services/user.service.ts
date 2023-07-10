@@ -1,15 +1,19 @@
-export const create = async (data) => {
-  // const isUser = await UserModel.count({
-  //   where: { username: data.username, email: data.email },
-  // });
-  // var result = false;
-  // if (!isUser) {
-  //   const user = await UserModel.create({ ...data, raw: true });
-  //   result = user;
-  // }
-  // return result;
+import { User } from "../models/user.model";
+
+export const createUser = async (data: any) => {
+  const { username, email, password } = data;
+
+  const user = new User({
+    username,
+    email,
+    password,
+  });
+
+  let result = await user.save();
+  return result;
 };
 
-module.exports = {
-  create,
+export const test = async () => {
+  let x = "aaa";
+  return x;
 };

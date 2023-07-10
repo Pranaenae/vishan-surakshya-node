@@ -11,9 +11,11 @@ export const errorHandler = (
     "><><><><><>< ------- From Error Handelling Middleware ------- ><><><><><><",
     err
   );
+  console.log({ err: err.status });
 
   // custom AppError (extends Error)
   if (err instanceof AppError) {
+    console.log({ err });
     return res.status(err.status).json({
       //   errorCode: err.errorCode,
       message: err.message,
@@ -26,33 +28,30 @@ export const errorHandler = (
 /**
  * If error is not an instanceOf APIError, convert it.
  */
-// export const converter = (
-//   err: AppError,
-//   req: Request,
-//   res: Response,
-//   _next: NextFunction
-// ) => {
-//   console.log("inside convertor  ");
-//   let convertedError = err;
+export const errorConverter = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("inside convertor  ");
+  let convertedError = err as any;
 
-//   if (!(err instanceof AppError)) {
-//     convertedError = new AppError({
-//       message: err.message,
-//       status: err.status || 500,
-//       //   errors: err.errors,
-//     });
-//   }
+  if (!(err instanceof AppError)) {
+    let message = err.message || "internal Server Error";
+    let status = err.status || 500;
+    convertedError = new AppError(status, message);
+  }
 
-//   return errorHandler(convertedError, req, res);
-// };
+  return errorHandler(convertedError, req, res, next);
+};
 
 /**
  * Catch 404 and forward to error handler
  */
-// export const notFound = (req: Request, res: Response) => {
-//   const err = new AppError({
-//     message: "Not found",
-//     status: httpStatus.NOT_FOUND,
-//   });
-//   return errorHandler(err, req, res);
-// };
+export const notFound = (req: Request, res: Response, next: NextFunction) => {
+  let message = "Route Not found";
+  let status = 404;
+  const err = new AppError(status, message);
+  return errorHandler(err, req, res, next);
+};
