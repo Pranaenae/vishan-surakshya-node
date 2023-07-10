@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import { errorHandler } from "../api/middlewares/error.middleware";
+import indexRouter from "../api/routes/index.router";
 
 const app = express();
 
@@ -8,7 +10,7 @@ const app = express();
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+    // methods: ["GET", "POST", "PATCH", "DELETE"],
   })
 );
 
@@ -18,5 +20,8 @@ app.use(morgan("combined"));
 // parse body params and attache them to req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/api", indexRouter);
+app.use("*", errorHandler);
 
 export default app;
