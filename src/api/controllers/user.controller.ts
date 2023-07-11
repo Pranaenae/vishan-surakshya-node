@@ -11,7 +11,7 @@ export const register = catchAsync(async (req: Request, res: Response) => {
   }
   res
     .status(200)
-    .json({ message: "User created successfully.", success: true, result });
+    .json({ message: "Check your mail for OTP", success: true, result });
 });
 
 export const test = catchAsync(async (req: Request, res: Response) => {
