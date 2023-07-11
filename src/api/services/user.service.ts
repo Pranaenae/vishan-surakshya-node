@@ -1,6 +1,6 @@
 import { OTP } from "../models/registerOtp.model";
 import { User } from "../models/user.model";
-import { AppError } from "../utils/AppError";
+import { AppError } from "../utils/appError";
 import { transporter } from "./mail.service";
 
 export const createUser = async (data: any) => {
