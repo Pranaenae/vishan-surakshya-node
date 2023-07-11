@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { AppError } from "../utils/appError";
+import AppErrorUtil from "../utils/appError";
 
 export const errorHandler = (
-  err: AppError,
+  err: AppErrorUtil,
   req: Request,
   res: Response,
   next: NextFunction
@@ -13,8 +13,8 @@ export const errorHandler = (
   );
   console.log({ err: err.status });
 
-  // custom AppError (extends Error)
-  if (err instanceof AppError) {
+  // custom AppErrorUtil (extends Error)
+  if (err instanceof AppErrorUtil) {
     console.log({ err });
     return res.status(err.status).json({
       //   errorCode: err.errorCode,
@@ -37,10 +37,10 @@ export const errorConverter = (
   console.log("inside convertor  ");
   let convertedError = err as any;
 
-  if (!(err instanceof AppError)) {
+  if (!(err instanceof AppErrorUtil)) {
     let message = err.message || "internal Server Error";
     let status = err.status || 500;
-    convertedError = new AppError(status, message);
+    convertedError = new AppErrorUtil(status, message);
   }
 
   return errorHandler(convertedError, req, res, next);
@@ -52,6 +52,6 @@ export const errorConverter = (
 export const notFound = (req: Request, res: Response, next: NextFunction) => {
   let message = "Route Not found";
   let status = 404;
-  const err = new AppError(status, message);
+  const err = new AppErrorUtil(status, message);
   return errorHandler(err, req, res, next);
 };
