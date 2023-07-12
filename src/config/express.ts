@@ -7,6 +7,7 @@ import {
   notFound,
 } from "../api/middlewares/error.middleware";
 import indexRouter from "../api/routes/index.router";
+import router from "../api/routes/user.router";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(morgan("combined"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/user", router);
 app.use("/api", indexRouter);
 app.use("*", notFound);
 app.use("*", errorConverter);

@@ -35,12 +35,12 @@ export const sendMailService = async ({
   }
 };
 
-export const sendOTP = async ({ email, subject, token }: IEmailOptions) => {
+export const sendOTP = async ({ email, otp }: IEmailOptions) => {
   const mailOptions = {
     from: `test@gmail.com`,
     to: email,
-    subject: subject,
-    text: "text-template",
+    subject: "OTP for email verification",
+    text: `OTP for email verification is ${otp}`,
   };
 
   try {
