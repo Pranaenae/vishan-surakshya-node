@@ -9,12 +9,13 @@ const otpSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isEmailVerified: {
+  isVerified: {
     type: Boolean,
     default: false,
   },
-  otpExpiredAt: {
+  otpExpiresAt: {
     type: Date,
+    required: true,
   },
 });
-export const OTP = mongoose.model("OTP", otpSchema);
+export const OTPRegister = mongoose.model("OTP", otpSchema);
