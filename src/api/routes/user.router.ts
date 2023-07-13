@@ -4,13 +4,15 @@ import {
   emailSending,
   sellerRegister,
   test,
+  registerUser,
 } from "../controllers/user.controller";
 
 const router = Router();
 
+router.post("/register", registerUser);
 router.post("/emailSent", emailSending);
 router.post("/emailVerify", OTPVerify);
-router.post("/register", sellerRegister);
+router.post("/registerr", sellerRegister);
 
 router.get("/test", test);
 
