@@ -50,7 +50,9 @@ export const isAuth = async (
           if (!user) {
             throw new AppErrorUtil(400, "Unvalid token");
           } else {
+            //@ts-ignore
             req.user = user;
+
             next();
           }
         }

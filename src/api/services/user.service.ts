@@ -3,7 +3,7 @@ import { User } from "../models/user.model";
 import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { mailService } from "./index.service";
-import { sendOTP } from "./mail.service";
+import { sendMailService, sendOTP } from "./mail.service";
 import bcrypt from "bcrypt";
 import { IregisterUser } from "../utils/types/user.type";
 import logger from "../../config/logger";
@@ -87,6 +87,80 @@ export const register = async (data: any) => {
     password: hashedPassword,
   });
   const result = await newUser.save();
+  return result;
+};
+
+export const login = async (data: any) => {
+  const { email, password } = data;
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new AppErrorUtil(
+      404,
+      "The email or password you entered is incorrect"
+    );
+  }
+  const verifyPass = user.password;
+  const verify = bcrypt.compare(password, verifyPass ? verifyPass : "");
+  if (!verify) {
+    throw new AppErrorUtil(400, "The email or password you entered is correct");
+  }
+  const payload = {
+    _id: user?._id,
+    email: user?.email,
+  };
+  const secretKey = process.env.JWT_SECRET_KEY
+    ? process.env.JWT_SECRET_KEY
+    : "";
+  const token = jwt.sign(payload, secretKey);
+  return { verify, token };
+};
+
+export const forgetPassword = async (data: any) => {
+  const { email, currentUrl } = data;
+
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new AppErrorUtil(404, "User with this email not found");
+  } else {
+    const payload = { _id: user._id, email: user.email };
+    console.log("xxxxxx", payload);
+
+    const secretKey = process.env.JWT_SECRET_KEY
+      ? process.env.JWT_SECRET_KEY
+      : "";
+
+    const token = jwt.sign(payload, secretKey, {
+      expiresIn: "1d",
+    });
+    console.log({ token: token });
+
+    const emailSuccess = await sendMailService({
+      email,
+      token,
+      subject: "Click the link below to reset password",
+      currentUrl,
+    });
+    return { emailSuccess, token };
+  }
+};
+
+export const resetPassword = async (data: any) => {
+  const { newPassword, confirmPassword, token } = data;
+  if (newPassword !== confirmPassword) {
+    throw new AppErrorUtil(400, "Please confirm the correct password");
+  }
+  const secretKey = process.env.JWT_SECRET_KEY
+    ? process.env.JWT_SECRET_KEY
+    : "";
+  const payload: any = jwt.verify(token, secretKey);
+  const user = await User.findOne({
+    _id: payload._id,
+  });
+  if (!user) {
+    throw new AppErrorUtil(400, "Cannot find user");
+  }
+  user.password = await bcrypt.hash(newPassword, 10);
+  const result = await user.save();
   return result;
 };
 
