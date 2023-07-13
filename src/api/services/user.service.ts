@@ -150,7 +150,6 @@ export const resetPassword = async (data: any) => {
   const secretKey = process.env.JWT_SECRET_KEY
     ? process.env.JWT_SECRET_KEY
     : "";
-  // const onlyToken = token.split(" ")[1];
   const payload: any = jwt.verify(token, secretKey);
   const user = await User.findOne({
     _id: payload._id,
