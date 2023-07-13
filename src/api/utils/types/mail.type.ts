@@ -1,8 +1,10 @@
 export interface IEmailOptions {
-  subject: string;
-  email?: string;
+  subject?: string;
+  otp?: string;
+  email?: any;
   text?: string;
   html?: string;
   token?: string;
   currentUrl?: string;
+  registerUrl?: string;
 }
