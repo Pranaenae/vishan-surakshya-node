@@ -44,3 +44,41 @@ export const sellerRegister = catchAsync(
     });
   }
 );
+
+export const sellerLogin = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.login(req.body);
+  if (!result.verify) {
+    throw new AppErrorUtil(400, "Cannot login, please try again");
+  }
+  return res.status(200).json({
+    message: "Successfully Login",
+    success: true,
+    token: result.token,
+  });
+});
+
+export const forgetPassword = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await userService.forgetPassword(req.body);
+    if (!result) {
+      throw new AppErrorUtil(400, "Cannot send email");
+    }
+    return res.status(200).json({
+      message: "Check your email to reset password",
+      success: true,
+      result,
+    });
+  }
+);
+
+export const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.resetPassword(req.body);
+  if (!result) {
+    throw new AppErrorUtil(400, "Error resetting Password,Please try again");
+  }
+  return res.status(200).json({
+    message: "Password reset successfully",
+    success: true,
+    result,
+  });
+});
