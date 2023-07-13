@@ -5,6 +5,9 @@ import { catchAsync } from "../utils/catchAsync";
 import { mailService } from "./index.service";
 import { sendOTP } from "./mail.service";
 import bcrypt from "bcrypt";
+import { IregisterUser } from "../utils/types/user.type";
+import logger from "../../config/logger";
+import jwt from "jsonwebtoken";
 
 export const sendEmail = async (data: any) => {
   let result: any;
@@ -21,7 +24,7 @@ export const sendEmail = async (data: any) => {
   await mailService.sendOTP({ email, otp });
   const existingOTP = await OTPRegister.findOne({ email });
   if (existingOTP) {
-    (existingOTP.OTP = hashedOtp), (existingOTP.otpExpiresAt = otpExpiresAt);
+    (existingOTP.otp = hashedOtp), (existingOTP.otpExpiresAt = otpExpiresAt);
     result = existingOTP.save();
     return result;
   } else {
@@ -48,7 +51,7 @@ export const verifyOTP = async (data: any) => {
       "OTP expired,please send another OTP to verify email"
     );
   }
-  const verify = await bcrypt.compare(otp, seller.OTP);
+  const verify = await bcrypt.compare(otp, seller.otp);
   if (!verify) {
     throw new AppErrorUtil(400, "Invalid OTP");
   }
@@ -64,12 +67,12 @@ export const register = async (data: any) => {
   if (existingUser) {
     throw new AppErrorUtil(
       400,
-      "Seller with this email already registered,please login to proceed "
+      "Seller with this email already registered,please login to proceed"
     );
   }
   const verifiedUser = await OTPRegister.findOne({ email });
   if (!verifiedUser) {
-    throw new AppErrorUtil(404, "User with this email not found ");
+    throw new AppErrorUtil(404, "User with this email not found");
   }
   if (!verifiedUser?.isVerified) {
     throw new AppErrorUtil(
@@ -90,4 +93,57 @@ export const register = async (data: any) => {
 export const test = async () => {
   let x = "aaa";
   return x;
+};
+
+export const registerUser = async (data: IregisterUser) => {
+  const {
+    name,
+    email,
+    pan,
+    gst,
+    bankName,
+    accountNumber,
+    accountHolderName,
+    currentUrl,
+  } = data;
+
+  const user = new User({
+    name,
+    email,
+    pan,
+    gst,
+    bankName,
+    accountNumber,
+    accountHolderName,
+  });
+
+  // const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  // let hashedOtp = bcrypt.hash(otp, 10);
+  // mailService.sendOTP({ email, otp }).then((data) => {
+  //   logger.info(`verification otp sent to ${email}`);
+  // });
+
+  const result = await user.save();
+  const token = jwt.sign(
+    { payload: { id: result.id } },
+    process.env.JWT_SECRET_KEY!,
+    {
+      expiresIn: "1w",
+    }
+  );
+  const registerUrl = `${currentUrl}/user/set-password/?token=${token}`;
+  mailService
+    .registerMail({ email, registerUrl })
+    .then(() => {
+      logger.info(`register set-password sent to ${email}`);
+    })
+    .catch((error) => {
+      console.log({ error });
+      logger.error("error in sending email");
+    });
+  return result;
+};
+
+export const verifyForPassword = async (data: any) => {
+  let a = data;
 };

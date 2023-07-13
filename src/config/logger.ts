@@ -12,16 +12,21 @@ const logFormat = printf(({ level, message, timestamp }) => {
 const transport: DailyRotateFile = new DailyRotateFile({
   filename: "./logs/application-%DATE%.log",
   datePattern: "YYYY-MM-DD",
-  zippedArchive: true,
+  level: "info",
   maxSize: "20m",
-  maxFiles: "14d",
 });
 
+const errorTransport: DailyRotateFile = new DailyRotateFile({
+  filename: "./logs/error-%DATE%.log",
+  datePattern: "YYYY-MM-DD",
+  level: "error",
+  maxSize: "20m",
+});
 // logger instance
 const logger = winston.createLogger({
   level: "info",
   format: combine(timestamp({ format: "YYYY-MM-DD HH:mm:ss" }), logFormat),
-  transports: [transport, new winston.transports.Console()],
+  transports: [transport, errorTransport, new winston.transports.Console()],
 });
 
 export default logger;
