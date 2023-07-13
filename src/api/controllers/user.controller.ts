@@ -1,7 +1,20 @@
 import { Request, Response } from "express";
+import logger from "../../config/logger";
 import { userService } from "../services/index.service";
 import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
+import { IregisterUser } from "../utils/types/user.type";
+
+export const registerUser = catchAsync(
+  async (req: Request<IregisterUser>, res: Response) => {
+    // console.log(req.headers);
+    const result = await userService.registerUser(req.body);
+    if (!result) {
+      throw new AppErrorUtil(400, "Uer not created");
+    }
+    res.status(200).json({ message: "User created successfully", result });
+  }
+);
 
 export const emailSending = catchAsync(async (req: Request, res: Response) => {
   console.log("xvb", req.body);

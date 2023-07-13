@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import logger from "../../config/logger";
 import AppErrorUtil from "../utils/appError";
 
 export const errorHandler = (
@@ -12,7 +13,7 @@ export const errorHandler = (
     err
   );
   console.log({ err: err.status });
-
+  logger.error(err);
   // custom AppErrorUtil (extends Error)
   if (err instanceof AppErrorUtil) {
     console.log({ err });

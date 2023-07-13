@@ -52,3 +52,20 @@ export const sendOTP = async ({ email, otp }: IEmailOptions) => {
     throw new AppErrorUtil(400, "Couldn't send mail");
   }
 };
+
+export const registerMail = async ({ email, registerUrl }: IEmailOptions) => {
+  const mailOptions = {
+    from: `test@gmail.com`,
+    to: email,
+    subject: "OTP for email verification",
+    text: `Please click the link to set password: ${registerUrl}`,
+  };
+  try {
+    const mailsent = await transporter.sendMail(mailOptions);
+    if (mailsent) {
+      return true;
+    }
+  } catch (error) {
+    throw new AppErrorUtil(400, "Couldn't send mail. Please try again.");
+  }
+};
