@@ -53,12 +53,16 @@ export const sendOTP = async ({ email, otp }: IEmailOptions) => {
   }
 };
 
-export const registerMail = async ({ email, registerUrl }: IEmailOptions) => {
+export const registerMail = async ({
+  email,
+  registerUrl,
+  password,
+}: IEmailOptions) => {
   const mailOptions = {
     from: `test@gmail.com`,
     to: email,
-    subject: "OTP for email verification",
-    text: `Please click the link to set password: ${registerUrl}`,
+    subject: "Password for account verification",
+    text: `${password} is your password,Please click the link to set password and verify your account : ${registerUrl}`,
   };
   try {
     const mailsent = await transporter.sendMail(mailOptions);

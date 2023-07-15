@@ -14,6 +14,7 @@ export const isAuth = async (
       return res.status(401).json({ message: "No token", success: false });
     }
     const bearerToken = req.headers.authorization || req.cookies.session;
+    console.log("mk", bearerToken);
 
     if (!bearerToken) {
       return res
@@ -24,7 +25,7 @@ export const isAuth = async (
 
       jwt.verify(
         token,
-        process.env.JWT_SECRET!,
+        process.env.JWT_SECRET_KEY!,
         async (err: any, decoded: any) => {
           if (err)
             res.status(401).json({
@@ -38,17 +39,20 @@ export const isAuth = async (
           //     where: { id: decoded.id },
           //     relations: { employee: true, roles: true },
           //   });
-
+          console.log({ decoded });
           // Mongoose sample (to do)
           const user = await User.findOne({
             _id: decoded.id,
             // "status.status": true,
           });
+          console.log({ user });
           // .populate("department role")
           // .select(["-__v", "-password"]);
 
           if (!user) {
-            throw new AppErrorUtil(400, "Unvalid token");
+            return res.status(400).json({
+              message: "Invalid Token",
+            });
           } else {
             //@ts-ignore
             req.user = user;
