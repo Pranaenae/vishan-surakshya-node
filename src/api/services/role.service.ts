@@ -13,16 +13,16 @@ export const create = async (data: IRole) => {
 };
 
 export const update = async (data: IRole) => {
-  const { id, name } = data;
+  const { _id, name } = data;
 
-  const result = await Role.findByIdAndUpdate(id, { name });
+  const result = await Role.findByIdAndUpdate(_id, { name });
   return result;
 };
 
 export const get = async (data: IRole) => {
-  const { id } = data;
+  const { _id } = data;
 
-  const result = await Role.findById(id);
+  const result = await Role.findById(_id);
   return result;
 };
 
@@ -32,15 +32,15 @@ export const getAll = async () => {
 };
 
 export const del = async (data: IRole) => {
-  const { id } = data;
+  const { _id } = data;
 
-  const result = await Role.findByIdAndDelete(id);
+  const result = await Role.findByIdAndDelete(_id);
   return result;
 };
 
 export const toggle = async (data: IRole) => {
-  const { id, toggleStatus } = data;
+  const { _id, toggleStatus } = data;
 
-  const result = await Role.findByIdAndUpdate(id, { toggleStatus });
+  const result = await Role.findByIdAndUpdate(_id, { toggleStatus });
   return result;
 };

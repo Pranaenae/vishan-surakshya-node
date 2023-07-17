@@ -27,7 +27,7 @@ export const getRole = catchAsync(async (req: Request, res: Response) => {
   if (!result) {
     throw new AppErrorUtil(400, "Could not find role.");
   }
-  res.status(200).json({ message: "Role updated Successfully." });
+  res.status(200).json(result);
 });
 
 // export const getAllRole = catchAsync()
