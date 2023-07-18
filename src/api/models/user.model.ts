@@ -4,17 +4,17 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
   },
   email: {
     type: String,
     required: true,
-    // unique: true,
+    unique: true,
   },
   pan: {
     type: Number,
     // required: true,
-    // unique: true,
+    unique: true,
   },
   gst: {
     type: String,
@@ -23,15 +23,15 @@ const userSchema = new mongoose.Schema({
   },
   bankName: {
     type: String,
-    required: true,
+    // required: true,
   },
   accountNumber: {
     type: Number,
-    required: true,
+    // required: true,
   },
   accountHolderName: {
     type: String,
-    required: true,
+    // required: true,
   },
   address: {
     type: String,
@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
 
   password: {
     type: String,
-    required: true,
+    // required: true,
   },
   userType: {
     type: String,

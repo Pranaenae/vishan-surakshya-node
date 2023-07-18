@@ -13,6 +13,7 @@ import {
   setPassword,
 } from "../controllers/user.controller";
 import { isAuth } from "../middlewares/auth.middleware";
+import { getAccessToken, getCode } from "../controllers/googleAuth.controller";
 
 const router = Router();
 
@@ -26,6 +27,9 @@ router.post("/resetPassword", resetPassword);
 router.get("/", isAuth, getProfile);
 router.put("/update", isAuth, updateUser);
 router.post("/set-password", isAuth, setPassword);
+router.get("/getCode", getCode);
+router.get("/token", getAccessToken);
+
 router.get("/test", test);
 
 export default router;
