@@ -4,38 +4,49 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
   },
   email: {
     type: String,
     required: true,
-    // unique: true,
+    unique: true,
   },
   pan: {
     type: Number,
-    required: true,
-    // unique: true,
+    // required: true,
+    unique: true,
   },
   gst: {
     type: String,
-    required: true,
+    // required: true,
     // unique: true
   },
   bankName: {
     type: String,
-    required: true,
+    // required: true,
   },
   accountNumber: {
     type: Number,
-    required: true,
+    // required: true,
   },
   accountHolderName: {
     type: String,
-    required: true,
+    // required: true,
   },
+  address: {
+    type: String,
+  },
+  mobileNumber: {
+    type: String,
+  },
+
   password: {
     type: String,
     // required: true,
+  },
+  userType: {
+    type: String,
+    enum: ["seller", "buyer"],
   },
   status: {
     type: String,
@@ -50,4 +61,4 @@ const userSchema = new mongoose.Schema({
   // updatedBy: {}
 });
 
-export const User = mongoose.model("User", userSchema);
+export const User = mongoose.model("users", userSchema);

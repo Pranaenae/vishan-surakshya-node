@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import logger from "../../config/logger";
-import { userService } from "../services/index.service";
+import { mailService, userService } from "../services/index.service";
 import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { IregisterUser } from "../utils/types/user.type";
+import jwt from "jsonwebtoken";
+import { User } from "../models/user.model";
+import moment from "moment";
+import bcrypt from "bcrypt";
 
 export const registerUser = catchAsync(
   async (req: Request<IregisterUser>, res: Response) => {
@@ -15,6 +19,24 @@ export const registerUser = catchAsync(
     res.status(200).json({ message: "User created successfully", result });
   }
 );
+
+export const setPassword = catchAsync(async (req: Request, res: Response) => {
+  //@ts-ignore
+  const user = req.user;
+
+  const data = req.body;
+  console.log({ data });
+  const test = {
+    ...data,
+    user,
+  };
+  console.log({ test });
+  const result = await userService.setPassword({ ...data, user });
+  if (!result) {
+    throw new AppErrorUtil(400, "Error while updating password");
+  }
+  return res.status(200).json({ message: "", success: true, result });
+});
 
 export const emailSending = catchAsync(async (req: Request, res: Response) => {
   console.log("xvb", req.body);
@@ -91,6 +113,35 @@ export const resetPassword = catchAsync(async (req: Request, res: Response) => {
   }
   return res.status(200).json({
     message: "Password reset successfully",
+    success: true,
+    result,
+  });
+});
+
+export const getProfile = catchAsync(async (req: Request, res: Response) => {
+  //@ts-ignore
+  const user = req.user;
+  const result = await userService.getProfile(user);
+  if (!result) {
+    throw new AppErrorUtil(400, "Error while fetching profile");
+  }
+  return res.status(200).json({
+    message: "your profile is:",
+    success: true,
+    result,
+  });
+});
+
+export const updateUser = catchAsync(async (req: Request, res: Response) => {
+  //@ts-ignore
+  const user = req.user;
+  const body = req.body;
+  const result = await userService.update({ user, body });
+  if (!result) {
+    throw new AppErrorUtil(400, "Error while updating user");
+  }
+  return res.status(200).json({
+    message: "User updated successfully",
     success: true,
     result,
   });

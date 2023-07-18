@@ -105,9 +105,10 @@ export const login = async (data: any) => {
     throw new AppErrorUtil(400, "The email or password you entered is correct");
   }
   const payload = {
-    _id: user?._id,
-    email: user?.email,
+    id: user.id,
+    email: user.email,
   };
+  console.log(payload);
   const secretKey = process.env.JWT_SECRET_KEY
     ? process.env.JWT_SECRET_KEY
     : "";
@@ -175,39 +176,44 @@ export const registerUser = async (data: IregisterUser) => {
     email,
     pan,
     gst,
+    userType,
+    address,
+    mobileNumber,
     bankName,
     accountNumber,
     accountHolderName,
     currentUrl,
   } = data;
 
+  const password = Math.floor(100000 + Math.random() * 900000).toString();
+  const hashedPassword = await bcrypt.hash(password, 10);
   const user = new User({
     name,
     email,
     pan,
     gst,
+    password: hashedPassword,
+    userType,
+    address,
+    mobileNumber,
     bankName,
     accountNumber,
     accountHolderName,
   });
-
-  // const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  // let hashedOtp = bcrypt.hash(otp, 10);
   // mailService.sendOTP({ email, otp }).then((data) => {
   //   logger.info(`verification otp sent to ${email}`);
   // });
 
   const result = await user.save();
-  const token = jwt.sign(
-    { payload: { id: result.id } },
-    process.env.JWT_SECRET_KEY!,
-    {
-      expiresIn: "1w",
-    }
-  );
+  const payload = {
+    id: result.id,
+  };
+  const token = jwt.sign(payload, process.env.JWT_SECRET_KEY!, {
+    expiresIn: "15 min",
+  });
   const registerUrl = `${currentUrl}/user/set-password/?token=${token}`;
   mailService
-    .registerMail({ email, registerUrl })
+    .registerMail({ email, registerUrl, password })
     .then(() => {
       logger.info(`register set-password sent to ${email}`);
     })
@@ -215,6 +221,57 @@ export const registerUser = async (data: IregisterUser) => {
       console.log({ error });
       logger.error("error in sending email");
     });
+  return result;
+};
+
+export const setPassword = async (data: any) => {
+  const { oldPassword, newPassword, confirmPassword } = data;
+  const verify = await bcrypt.compare(oldPassword, data.user.password);
+  if (!verify) {
+    throw new AppErrorUtil(400, "Invalid credentials");
+  }
+  if (newPassword != confirmPassword) {
+    throw new AppErrorUtil(
+      400,
+      "your password doesnot match with confirmPassword"
+    );
+  }
+  const existingUser = await User.findOne({ _id: data.user._id });
+  if (existingUser) {
+    let hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    existingUser.password = hashedPassword;
+    existingUser.status = "verified";
+    const result = await existingUser.save();
+    return result;
+  }
+};
+
+export const getProfile = async (data: any) => {
+  const { _id } = data;
+  const user = await User.findOne({ _id: _id });
+  return user;
+};
+
+export const update = async (data: any) => {
+  const existinguser = await User.findOne({ _id: data.user._id });
+
+  if (!existinguser) {
+    throw new AppErrorUtil(400, "User not found");
+  }
+  if (data.body.name) existinguser.name = data.body.name;
+  if (data.body.pan) existinguser.pan = data.body.pan;
+  if (data.body.gst) existinguser.gst = data.body.gst;
+  if (data.body.address) existinguser.address = data.body.address;
+  if (data.body.mobileNumber)
+    existinguser.mobileNumber = data.body.mobileNumber;
+  if (data.body.bankName) existinguser.bankName = data.body.bankName;
+  if (data.body.accountNumber)
+    existinguser.accountNumber = data.body.accountNumber;
+  if (data.body.accountHolderName)
+    existinguser.accountHolderName = data.body.accountHolderName;
+  const result = await existinguser.save();
+
   return result;
 };
 
