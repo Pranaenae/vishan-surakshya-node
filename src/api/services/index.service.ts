@@ -3,4 +3,8 @@ import * as mailService from "./mail.service";
 import * as adminService from "./admin.service";
 import * as googleService from "./google.service";
 
-export { userService, mailService, adminService, googleService };
+import * as roleService from "./role.service";
+import * as productService from "./product.service";
+import * as imageService from "./image.service";
+
+export { userService, mailService, roleService, productService, imageService };
