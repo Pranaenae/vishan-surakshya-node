@@ -11,7 +11,7 @@ let server: any;
 datasource
   .initialize()
   .then(() => {
-    console.log("Connected to MySQL Server!");
+    logger.info("Connected to MySQL Server!");
     server = app.listen(process.env.PORT, () => {
       logger.info(`Listening to port ${process.env.PORT}`);
     });
