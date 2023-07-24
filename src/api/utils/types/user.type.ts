@@ -1,9 +1,12 @@
-export interface IregisterUser {
+import { User } from "../../Entity/user.entity";
+import { IProduct } from "./product.type";
+
+export class IregisterUser {
   _id?: string;
   name: string;
   email: string;
-  pan?: number;
-  gst?: string;
+  pan?: number | null;
+  gst?: string | null;
   address?: string;
   userType: string;
   mobileNumber?: string;
@@ -14,3 +17,21 @@ export interface IregisterUser {
   // status?: enum;
   currentUrl?: string;
 }
+
+export enum UserTypeEnum {
+  Seller = "seller",
+  Buyer = "buyer",
+}
+
+export enum EmailStatusEnum {
+  Verified = "verified",
+  Unverified = "unverified",
+}
+export enum ProfileStatusEnum {
+  Pending = "pending",
+  Completed = "completed",
+}
+
+// export interface IUser extends Request, IProduct {
+//   user: User;
+// }

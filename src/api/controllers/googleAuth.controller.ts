@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import { googleService, userService } from "../services/index.service";
 import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
-import { User } from "../models/user.model";
+import { User } from "../Entity/user.entity";
+import datasource from "../../config/ormConfig";
+
+const userRepository = datasource.getRepository(User);
 
 export const getCode = catchAsync(async (req: Request, res: Response) => {
   const result = await googleService.getGoogleAuthURL();
@@ -22,13 +25,14 @@ export const getAccessToken = catchAsync(
     if (!result) {
       throw new AppErrorUtil(400, "Unable to redirect");
     }
-    const existUser = await User.findOne({ where: { email: result.email } });
+    const existUser = await userRepository.findOne({
+      where: { email: result.email },
+    });
     if (!existUser) {
-      const newUser = new User({
-        name: result.name,
-        email: result.email,
-      });
-      await newUser.save();
+      const newUser = new User();
+      (newUser.name = result.name),
+        (newUser.email = result.email),
+        await userRepository.save(newUser);
       return res
         .status(200)
         .json({ message: "Successfully login", success: true, newUser });

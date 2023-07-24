@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "experimentalDecorators": true /* Enable experimental support for TC39 stage 2 draft decorators. */,
+    "emitDecoratorMetadata": true,
     /* Modules */
     "module": "commonjs" /* Specify what module code is generated. */,
 
@@ -14,6 +15,7 @@
 
     /* Type Checking */
     "strict": true /* Enable all strict type-checking options. */,
+    "strictPropertyInitialization": false,
 
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */

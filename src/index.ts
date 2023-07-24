@@ -1,17 +1,24 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import app from "./config/express";
 import dotenv from "dotenv";
 import logger from "./config/logger";
+import datasource from "./config/ormConfig";
 
 dotenv.config();
 
 let server: any;
-mongoose.connect(process.env.MONGO_URL as string).then(() => {
-  logger.info("DB connected successfully");
-  server = app.listen(process.env.PORT, () => {
-    logger.info(`Listening to port ${process.env.PORT}`);
+
+datasource
+  .initialize()
+  .then(() => {
+    console.log("Connected to MySQL Server!");
+    server = app.listen(process.env.PORT, () => {
+      logger.info(`Listening to port ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
-});
 
 const exitHandler = () => {
   if (server) {

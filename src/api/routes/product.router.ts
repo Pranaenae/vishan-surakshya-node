@@ -8,10 +8,11 @@ import {
   updateProduct,
 } from "../controllers/product.controller";
 import { upload } from "../middlewares/image.middleware";
+import { isAuth } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.post("/", upload.single("image"), createProduct);
+router.post("/", upload.single("image"), isAuth, createProduct);
 router.get("/", getAllProduct);
 router.patch("/", updateProduct);
 router.patch("/toggle", toggleProduct);

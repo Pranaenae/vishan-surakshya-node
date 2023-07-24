@@ -1,11 +1,11 @@
 import { Router } from "express";
 import {
-  OTPVerify,
-  emailSending,
+  // OTPVerify,
+  // emailSending,
   forgetPassword,
   resetPassword,
   sellerLogin,
-  sellerRegister,
+  // sellerRegister,
   test,
   registerUser,
   getProfile,
@@ -18,9 +18,9 @@ import { getAccessToken, getCode } from "../controllers/googleAuth.controller";
 const router = Router();
 
 router.post("/register", registerUser);
-router.post("/emailSent", emailSending);
-router.post("/emailVerify", OTPVerify);
-router.post("/registerr", sellerRegister);
+// router.post("/emailSent", emailSending);
+// router.post("/emailVerify", OTPVerify);
+// router.post("/registerr", sellerRegister);
 router.post("/login", sellerLogin);
 router.post("/forgetPassword", forgetPassword);
 router.post("/resetPassword", resetPassword);

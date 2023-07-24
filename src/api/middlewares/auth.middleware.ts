@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Response } from "express";
 import { IRequestWithUser } from "../utils/types/types";
-import { User } from "../models/user.model";
+import { User } from "../Entity/user.entity";
 import AppErrorUtil from "../utils/appError";
+import datasource from "../../config/ormConfig";
 
+const userRepository = datasource.getRepository(User);
 export const isAuth = async (
   req: IRequestWithUser<any, any, any, any>,
   res: Response,
@@ -41,8 +43,8 @@ export const isAuth = async (
           //   });
           console.log({ decoded });
           // Mongoose sample (to do)
-          const user = await User.findOne({
-            _id: decoded.id,
+          const user = await userRepository.findOneBy({
+            id: decoded.id,
             // "status.status": true,
           });
           console.log({ user });
