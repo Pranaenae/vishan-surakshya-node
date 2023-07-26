@@ -1,7 +1,9 @@
 import { DataSource } from "typeorm";
 import { User } from "../api/Entity/user.entity";
 import { Product } from "../api/Entity/product.entity";
-import { Activity } from "../api/Entity/activity.entity";
+import { Transaction } from "../api/Entity/transaction.entity";
+import { Litigation } from "../api/Entity/litigation.entity";
+import { Image } from "../api/Entity/image.entity";
 
 const datasource = new DataSource({
   type: "mysql",
@@ -12,7 +14,7 @@ const datasource = new DataSource({
   database: process.env.DATABASE,
   synchronize: true,
   // logging: true,
-  entities: [User, Product, Activity],
+  entities: [User, Product, Transaction, Litigation, Image],
 });
 
 export default datasource;

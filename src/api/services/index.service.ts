@@ -6,7 +6,8 @@ import * as googleService from "./google.service";
 // import * as roleService from "./role.service";
 import * as productService from "./product.service";
 import * as imageService from "./image.service";
-import * as activityService from "./activity.service";
+import * as transactionService from "./transaction.service";
+import * as litigationService from "./litigation.service";
 
 export {
   userService,
@@ -16,5 +17,6 @@ export {
   imageService,
   googleService,
   adminService,
-  activityService,
+  transactionService,
+  litigationService,
 };

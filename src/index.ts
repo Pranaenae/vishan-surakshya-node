@@ -3,6 +3,7 @@ import app from "./config/express";
 import dotenv from "dotenv";
 import logger from "./config/logger";
 import datasource from "./config/ormConfig";
+import path from "path";
 
 dotenv.config();
 

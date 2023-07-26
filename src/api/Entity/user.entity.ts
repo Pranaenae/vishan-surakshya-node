@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Activity } from "./activity.entity";
+import { Transaction } from "./transaction.entity";
 import { Base } from "./base.entity";
 import {
   UserTypeEnum,
@@ -17,7 +17,7 @@ export class User extends Base {
   email: string;
 
   @Column({ unique: true, nullable: true })
-  pan: number;
+  pan:string;
 
   @Column({ nullable: true })
   gst: string;
@@ -57,8 +57,8 @@ export class User extends Base {
   })
   profileStatus: string;
 
-  @OneToMany(() => Activity, (activity) => activity.user)
-  activity: Activity;
+  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  transaction: Transaction;
   @OneToMany(() => Product, (product) => product.user)
   product: Product;
 }
