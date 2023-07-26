@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { googleService, userService } from "../services/index.service";
 import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
-import { User } from "../Entity/user.entity";
+import { User } from "../entity/user.entity";
 import datasource from "../../config/ormConfig";
 
 const userRepository = datasource.getRepository(User);

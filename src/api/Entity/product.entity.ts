@@ -21,19 +21,20 @@ export class Product extends Base {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ name: "delivery_time" })
   deliveryTime: Date;
 
-  @Column()
+  @Column({ name: "delivery_charge" })
   deliveryCharge: Number;
 
-  @Column()
+  @Column({ name: "delivery_address" })
   deliveryAddress: string;
 
-  @Column({ default: true })
+  @Column({ name: "toggle_status", default: true })
   toggleStatus: Boolean;
 
   @Column({
+    name: "order_status",
     type: "enum",
     enum: EOrderTracking,
     default: EOrderTracking.Pending,

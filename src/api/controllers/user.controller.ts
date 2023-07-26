@@ -5,7 +5,7 @@ import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { IregisterUser } from "../utils/types/user.type";
 import jwt from "jsonwebtoken";
-import { User } from "../Entity/user.entity";
+import { User } from "../entity/user.entity";
 import moment from "moment";
 import bcrypt from "bcrypt";
 

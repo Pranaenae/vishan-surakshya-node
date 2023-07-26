@@ -1,9 +1,9 @@
 import path from "path";
 import datasource from "../../config/ormConfig";
-import { Litigation } from "../Entity/litigation.entity";
+import { Litigation } from "../entity/litigation.entity";
 import { ILitigationRequest } from "../utils/types/litigation.types";
-import { Product } from "../Entity/product.entity";
-import { Image } from "../Entity/image.entity";
+import { Product } from "../entity/product.entity";
+import { Image } from "../entity/image.entity";
 
 const litigationRepo = datasource.getRepository(Litigation);
 const productRepository = datasource.getRepository(Product);

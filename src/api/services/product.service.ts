@@ -1,10 +1,7 @@
-import path from "path";
 import datasource from "../../config/ormConfig";
-import { Image } from "../Entity/image.entity";
-import { Product } from "../Entity/product.entity";
+import { Image } from "../entity/image.entity";
+import { Product } from "../entity/product.entity";
 import { IProduct } from "../utils/types/product.type";
-import jwt from "jsonwebtoken";
-import AppErrorUtil from "../utils/appError";
 const productRepository = datasource.getRepository(Product);
 const imageRepo = datasource.getRepository(Image);
 
@@ -18,8 +15,6 @@ export const create = async (data: IProduct, files: any) => {
     deliveryAddress,
   } = data;
 
-  console.log(user);
-
   const product = new Product();
   product.name = name;
   product.description = description;
@@ -29,19 +24,17 @@ export const create = async (data: IProduct, files: any) => {
   product.user = user;
 
   const savedProduct = await productRepository.save(product);
-  const image = new Image();
-  const savedImages = await Promise.all(
-    files.map(async (file: any) => {
-      const data = path.join(__dirname, "../../uploads", file.originalname);
-      image.imagePath = data;
-      image.product = savedProduct;
-      return await imageRepo.save(image);
-    })
-  );
-  const result = await productRepository.findOneBy({ id: savedProduct.id });
-  console.log({ result });
-  return result;
-  // return { ...savedProduct, images: savedImages };
+  if (savedProduct) {
+    const image = new Image();
+    await Promise.all(
+      files.map(async (file: any) => {
+        image.imagePath = file.filename;
+        image.product = savedProduct;
+        return await imageRepo.save(image);
+      })
+    );
+  }
+  return savedProduct;
 };
 
 export const update = async (data: IProduct) => {

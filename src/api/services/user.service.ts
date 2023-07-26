@@ -1,5 +1,5 @@
 // import { OTPRegister } from "../models/registerOtp.model";
-import { User } from "../Entity/user.entity";
+import { User } from "../entity/user.entity";
 import AppErrorUtil from "../utils/appError";
 import { mailService } from "./index.service";
 import { sendMailService, sendOTP } from "./mail.service";
@@ -103,10 +103,7 @@ export const login = async (data: any) => {
     );
   }
   if (user.emailStatus === "unverified") {
-    throw new AppErrorUtil(
-      400,
-      "Please verify your account through email76"
-    );
+    throw new AppErrorUtil(400, "Please verify your account through email76");
   }
   const verifyPass = user.password;
   console.log({ verifyPass });
@@ -128,15 +125,14 @@ export const login = async (data: any) => {
   }
 };
 
-export const forgetPassword = async (data: any,origin:any) => {
-  const { email} = data;
+export const forgetPassword = async (data: any, origin: any) => {
+  const { email } = data;
 
   const user = await userRepositoy.findOneBy({ email: email });
   if (!user) {
     throw new AppErrorUtil(404, "User with this email not found");
   } else {
     const payload = { _id: user.id, email: user.email };
-    console.log("xxxxxx", payload);
 
     const secretKey = process.env.JWT_SECRET_KEY
       ? process.env.JWT_SECRET_KEY
@@ -151,7 +147,7 @@ export const forgetPassword = async (data: any,origin:any) => {
       email,
       token,
       subject: "Click the link below to reset password",
-      origin
+      origin,
     });
     return { emailSuccess, token };
   }
@@ -252,8 +248,8 @@ export const registerUser = async (data: IregisterUser, origin: any) => {
       logger.info(`register set-password sent to ${email}`);
     })
     .catch((error) => {
-      console.log({ error });
-      logger.error("error in sending email");
+      console.log("error in sending email");
+      logger.error({ error });
     });
   return { tempUser, token };
 };

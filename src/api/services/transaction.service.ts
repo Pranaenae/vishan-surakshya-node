@@ -1,6 +1,6 @@
 import datasource from "../../config/ormConfig";
-import { Transaction } from "../Entity/transaction.entity";
-import { Product } from "../Entity/product.entity";
+import { Transaction } from "../entity/transaction.entity";
+import { Product } from "../entity/product.entity";
 import { ILogoptions } from "../utils/types/log.type";
 
 const activityRepository = datasource.getRepository(Transaction);

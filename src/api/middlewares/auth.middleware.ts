@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Response } from "express";
 import { IRequestWithUser } from "../utils/types/types";
-import { User } from "../Entity/user.entity";
+import { User } from "../entity/user.entity";
 import AppErrorUtil from "../utils/appError";
 import datasource from "../../config/ormConfig";
 

@@ -6,18 +6,14 @@ import { IProduct } from "../utils/types/product.type";
 
 export const createProduct = catchAsync(
   async (req: IProduct, res: Response) => {
-    console.log({ xx: req.headers });
     const user = req.user;
     const parameter = {
       user,
       ...req.body,
     };
-    console.log({ parameter });
 
     const result = await productService.create(parameter, req.files);
-    console.log({ result });
-    // console.log(result.id);
-    //
+
     if (!result) {
       throw new AppErrorUtil(400, "Could not create product.");
     }
