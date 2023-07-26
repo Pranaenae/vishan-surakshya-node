@@ -8,7 +8,7 @@ import AppErrorUtil from "../utils/appError";
 const productRepository = datasource.getRepository(Product);
 const imageRepo = datasource.getRepository(Image);
 
-export const create = async (data: IProduct, file: any) => {
+export const create = async (data: IProduct, files: any) => {
   const {
     user,
     name,
@@ -31,7 +31,7 @@ export const create = async (data: IProduct, file: any) => {
   const savedProduct = await productRepository.save(product);
   const image = new Image();
   const savedImages = await Promise.all(
-    file.map(async (file: any) => {
+    files.map(async (file: any) => {
       const data = path.join(__dirname, "../../uploads", file.originalname);
       image.imagePath = data;
       image.product = savedProduct;

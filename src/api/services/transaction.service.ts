@@ -2,8 +2,10 @@ import datasource from "../../config/ormConfig";
 import { Transaction } from "../Entity/transaction.entity";
 import { Product } from "../Entity/product.entity";
 import { ILogoptions } from "../utils/types/log.type";
+
 const activityRepository = datasource.getRepository(Transaction);
 const productRepository = datasource.getRepository(Product);
+
 export const logEntry = async (details: ILogoptions) => {
   const { activity, user, product } = details;
   console.log({ user });
@@ -17,7 +19,7 @@ export const logEntry = async (details: ILogoptions) => {
   return response;
 };
 
-export const logByProductId = async (data: any) => {
+export const transactionByProductId = async (data: any) => {
   console.log({ data });
   const id = data.id;
 

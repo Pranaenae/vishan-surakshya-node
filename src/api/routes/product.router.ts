@@ -12,7 +12,7 @@ import { isAuth } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.post("/", upload.array("image", 5), isAuth, createProduct);
+router.post("/", upload.array("images", 5), isAuth, createProduct);
 router.get("/", getAllProduct);
 router.patch("/", updateProduct);
 router.patch("/toggle", toggleProduct);
