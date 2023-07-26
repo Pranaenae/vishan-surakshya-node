@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { activityService, productService } from "../services/index.service";
-import AppErrorUtil from "../utils/appError";
+import AppErrorUtil from "../utils/AppError";
 import { catchAsync } from "../utils/catchAsync";
 import { IProduct } from "../utils/types/product.type";
 

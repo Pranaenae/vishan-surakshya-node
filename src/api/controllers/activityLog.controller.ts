@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { catchAsync } from "../utils/catchAsync";
 import { activityService } from "../services/index.service";
-import AppErrorUtil from "../utils/appError";
+import AppErrorUtil from "../utils/AppError";
 
 export const logEntry = catchAsync(async (req: Request, res: Response) => {
   const result = await activityService.logEntry(req.body);

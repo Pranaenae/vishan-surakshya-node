@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextFunction, Response } from "express";
 import { IRequestWithUser } from "../utils/types/types";
 import { User } from "../Entity/user.entity";
-import AppErrorUtil from "../utils/appError";
+import AppErrorUtil from "../utils/AppError";
 import datasource from "../../config/ormConfig";
 
 const userRepository = datasource.getRepository(User);

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import logger from "../../config/logger";
 import { mailService, userService } from "../services/index.service";
-import AppErrorUtil from "../utils/appError";
+import AppErrorUtil from "../utils/AppError";
 import { catchAsync } from "../utils/catchAsync";
 import { IregisterUser } from "../utils/types/user.type";
 import jwt from "jsonwebtoken";

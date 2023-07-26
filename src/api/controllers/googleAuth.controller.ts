@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { googleService, userService } from "../services/index.service";
-import AppErrorUtil from "../utils/appError";
+import AppErrorUtil from "../utils/AppError";
 import { catchAsync } from "../utils/catchAsync";
 import { User } from "../Entity/user.entity";
 import datasource from "../../config/ormConfig";

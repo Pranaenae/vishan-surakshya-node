@@ -1,0 +1,22 @@
+services:
+  surakshya-backend:
+    image: surakshya-back-image
+    container_name: surak-back-con
+    build: .
+    ports:
+    - 8989:8989
+    env_file: .env
+    depends_on:
+    - mysql
+
+  mysql:
+    image: mysql
+    container_name: mysql-con
+    ports:
+    - 3306:3306
+    env_file: .sqlenv
+    volumes:
+    - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

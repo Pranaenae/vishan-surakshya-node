@@ -1,6 +1,6 @@
 // import { OTPRegister } from "../models/registerOtp.model";
 import { User } from "../Entity/user.entity";
-import AppErrorUtil from "../utils/appError";
+import AppErrorUtil from "../utils/AppError";
 import { mailService } from "./index.service";
 import { sendMailService, sendOTP } from "./mail.service";
 import bcrypt from "bcrypt";

@@ -1,5 +1,5 @@
 import { transporter } from "../../config/mail";
-import AppErrorUtil from "../utils/appError";
+import AppErrorUtil from "../utils/AppError";
 import { IEmailOptions } from "../utils/types/mail.type";
 
 export const sendMailService = async ({

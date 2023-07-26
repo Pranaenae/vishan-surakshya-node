@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { adminService } from "../services/index.service";
-import AppErrorUtil from "../utils/appError";
+import AppErrorUtil from "../utils/AppError";
 import { catchAsync } from "../utils/catchAsync";
 
 export const getUsers = catchAsync(async (req: Request, res: Response) => {
