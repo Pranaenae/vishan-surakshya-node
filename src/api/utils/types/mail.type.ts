@@ -7,5 +7,6 @@ export interface IEmailOptions {
   html?: string;
   token?: string;
   currentUrl?: string;
+  origin?: string;
   registerUrl?: string;
 }

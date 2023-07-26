@@ -10,15 +10,15 @@ import { User } from "./user.entity";
 import { Base } from "./base.entity";
 
 @Entity()
-export class Activity extends Base {
+export class Transaction extends Base {
   @Column()
-  description: string;
+  activity: string;
 
-  @ManyToOne(() => User, (user) => user.activity)
+  @ManyToOne(() => User, (user) => user.transaction)
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @ManyToOne(() => Product, (product) => product.activity)
+  @ManyToOne(() => Product, (product) => product.transaction)
   @JoinColumn({ name: "product_id" })
   product: Product;
 }

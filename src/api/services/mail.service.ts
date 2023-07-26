@@ -6,9 +6,9 @@ export const sendMailService = async ({
   email,
   subject,
   token,
-  currentUrl,
+  origin,
 }: IEmailOptions) => {
-  const link = `${currentUrl}/authentication/sign-in/?token=${token}`;
+  const link = `${origin}/authentication/sign-in/?token=${token}`;
   console.log({ link });
   const mailOptions = {
     from: `taskmanagementsystem@gmail.com`,

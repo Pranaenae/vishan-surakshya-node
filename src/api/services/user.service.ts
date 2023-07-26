@@ -105,7 +105,7 @@ export const login = async (data: any) => {
   if (user.emailStatus === "unverified") {
     throw new AppErrorUtil(
       400,
-      "Please set your password first to verify your account"
+      "Please verify your account through email76"
     );
   }
   const verifyPass = user.password;
@@ -128,8 +128,8 @@ export const login = async (data: any) => {
   }
 };
 
-export const forgetPassword = async (data: any) => {
-  const { email, currentUrl } = data;
+export const forgetPassword = async (data: any,origin:any) => {
+  const { email} = data;
 
   const user = await userRepositoy.findOneBy({ email: email });
   if (!user) {
@@ -151,7 +151,7 @@ export const forgetPassword = async (data: any) => {
       email,
       token,
       subject: "Click the link below to reset password",
-      currentUrl,
+      origin
     });
     return { emailSuccess, token };
   }
@@ -182,7 +182,7 @@ export const test = async () => {
   return x;
 };
 
-export const registerUser = async (data: IregisterUser) => {
+export const registerUser = async (data: IregisterUser, origin: any) => {
   const {
     name,
     email,
@@ -194,7 +194,6 @@ export const registerUser = async (data: IregisterUser) => {
     bankName,
     accountNumber,
     accountHolderName,
-    currentUrl,
   } = data;
   const existUser = await userRepositoy.findOne({ where: { email: email } });
   if (existUser) {
@@ -209,17 +208,16 @@ export const registerUser = async (data: IregisterUser) => {
   console.log({ hashedPassword });
   const user: any = new User();
   user.name = name;
-  (user.email = email),
-    (user.password = hashedPassword),
-    (user.pan = pan),
-    (user.gst = gst),
-    (user.userType = userType),
-    (user.address = address),
-    (user.mobileNumber = mobileNumber),
-    (user.bankName = bankName),
-    (user.accountNumber = accountNumber),
-    (user.accountHolderName = accountHolderName);
-  user.currentUrl = currentUrl;
+  user.email = email;
+  user.password = hashedPassword;
+  user.pan = pan;
+  user.gst = gst;
+  user.userType = userType;
+  user.address = address;
+  user.mobileNumber = mobileNumber;
+  user.bankName = bankName;
+  user.accountNumber = accountNumber;
+  user.accountHolderName = accountHolderName;
 
   const tempUser = await userRepositoy.save(user);
 
@@ -247,7 +245,7 @@ export const registerUser = async (data: IregisterUser) => {
   };
   console.log({ payload });
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY!);
-  const registerUrl = `${currentUrl}/user/set-password/?token=${token}`;
+  const registerUrl = `${origin}/set-password/?token=${token}`;
   mailService
     .registerMail({ email, registerUrl, password })
     .then(() => {
