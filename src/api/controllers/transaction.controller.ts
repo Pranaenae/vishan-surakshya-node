@@ -12,8 +12,6 @@ export const logEntry = catchAsync(async (req: Request, res: Response) => {
 
 export const getActivityByProductId = catchAsync(
   async (req: Request, res: Response) => {
-    console.log("xvb");
-    console.log(req.params);
     const result = await transactionService.transactionByProductId(req.params);
     if (!result) {
       throw new AppErrorUtil(400, "Unable to retrive the transaction log");

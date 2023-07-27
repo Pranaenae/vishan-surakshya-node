@@ -1,8 +1,7 @@
 import { Request } from "express";
-import mongoose, { Document } from "mongoose";
 
 export interface IProduct extends Request {
-  id: string;
+  id: number;
   name: string;
   description: string;
   image: string;

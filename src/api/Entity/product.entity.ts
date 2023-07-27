@@ -19,13 +19,16 @@ export class Product extends Base {
   name: string;
 
   @Column()
+  price: number;
+
+  @Column()
   description: string;
 
   @Column({ name: "delivery_time" })
   deliveryTime: Date;
 
   @Column({ name: "delivery_charge" })
-  deliveryCharge: Number;
+  deliveryCharge: number;
 
   @Column({ name: "delivery_address" })
   deliveryAddress: string;

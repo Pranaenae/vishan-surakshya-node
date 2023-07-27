@@ -1,5 +1,5 @@
 export interface ILitigationRequest {
-  id?: string;
+  id?: number;
   reason: string;
   issue: string;
   doc: any;
