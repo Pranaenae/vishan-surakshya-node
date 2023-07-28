@@ -25,10 +25,13 @@ export const transactionByProductId = async (data: any) => {
 
   console.log({ id });
   const result = await datasource
-    .getRepository(Transaction)
-    .createQueryBuilder("activities")
-    .where("activities.product=:id", { id: id })
-    .getMany();
+    .getRepository(Product)
+    .createQueryBuilder("product")
+    .leftJoinAndSelect("product.transaction", "transaction")
+    .leftJoinAndSelect("product.user", "user")
+    .leftJoinAndSelect("product.images", "image")
+    .where("product.id=:id", { id: id })
+    .getOne();
 
   console.log({ result });
   return result;
