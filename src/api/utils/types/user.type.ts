@@ -1,4 +1,4 @@
-import { User } from "../../Entity/user.entity";
+import { User } from "../../entity/user.entity";
 import { IProduct } from "./product.type";
 
 export class IregisterUser {

@@ -1,5 +1,5 @@
 import datasource from "../../config/ormConfig";
-import { User } from "../Entity/user.entity";
+import { User } from "../entity/user.entity";
 import { UserTypeEnum } from "../utils/types/user.type";
 const userRepositoy = datasource.getRepository(User);
 

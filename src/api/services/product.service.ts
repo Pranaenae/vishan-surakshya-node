@@ -1,10 +1,11 @@
 import datasource from "../../config/ormConfig";
-import { Product } from "../Entity/product.entity";
+import { Image } from "../entity/image.entity";
+import { Product } from "../entity/product.entity";
 import { IProduct } from "../utils/types/product.type";
-import jwt from "jsonwebtoken";
 const productRepository = datasource.getRepository(Product);
+const imageRepo = datasource.getRepository(Image);
 
-export const create = async (data: IProduct, file: any) => {
+export const create = async (data: IProduct, files: any) => {
   const {
     user,
     name,
@@ -13,30 +14,27 @@ export const create = async (data: IProduct, file: any) => {
     deliveryCharge,
     deliveryAddress,
   } = data;
-  console.log(user);
 
   const product = new Product();
   product.name = name;
   product.description = description;
-  product.image = file?.filename;
   product.deliveryTime = deliveryTime;
   product.deliveryCharge = deliveryCharge;
   product.deliveryAddress = deliveryAddress;
   product.user = user;
 
-  const result = await productRepository.save(product);
-
-  // if (result) {
-  //   const payload = {
-  //     productId: result._id,
-  //   };
-  //   const secretKey = process.env.JWT_SECRET_KEY
-  //     ? process.env.JWT_SECRET_KEY
-  //     : "";
-  //   const token = jwt.sign(payload, secretKey);
-  //   return { result, token };
-  // }
-  return result;
+  const savedProduct = await productRepository.save(product);
+  if (savedProduct) {
+    const image = new Image();
+    await Promise.all(
+      files.map(async (file: any) => {
+        image.imagePath = file.filename;
+        image.product = savedProduct;
+        return await imageRepo.save(image);
+      })
+    );
+  }
+  return savedProduct;
 };
 
 export const update = async (data: IProduct) => {

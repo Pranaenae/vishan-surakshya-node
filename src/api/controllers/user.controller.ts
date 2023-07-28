@@ -5,16 +5,17 @@ import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { IregisterUser } from "../utils/types/user.type";
 import jwt from "jsonwebtoken";
-import { User } from "../Entity/user.entity";
+import { User } from "../entity/user.entity";
 import moment from "moment";
 import bcrypt from "bcrypt";
 
 export const registerUser = catchAsync(
   async (req: Request<IregisterUser>, res: Response) => {
-    // console.log(req.headers);
-    const result = await userService.registerUser(req.body);
+    const origin = req.headers.origin;
+    console.log(req.headers);
+    const result = await userService.registerUser(req.body, origin);
     if (!result) {
-      throw new AppErrorUtil(400, "Uer not created");
+      throw new AppErrorUtil(400, "User not created");
     }
     res.status(200).json({ message: "User created successfully", result });
   }
@@ -23,7 +24,6 @@ export const registerUser = catchAsync(
 export const setPassword = catchAsync(async (req: Request, res: Response) => {
   //@ts-ignore
   const user = req.user;
-
   const data = req.body;
   const test = {
     ...data,
@@ -81,6 +81,7 @@ export const test = catchAsync(async (req: Request, res: Response) => {
 // );
 
 export const sellerLogin = catchAsync(async (req: Request, res: Response) => {
+  console.log(req.headers);
   const result = await userService.login(req.body);
   if (!result) {
     throw new AppErrorUtil(400, "Cannot login, please try again");
@@ -94,7 +95,8 @@ export const sellerLogin = catchAsync(async (req: Request, res: Response) => {
 
 export const forgetPassword = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await userService.forgetPassword(req.body);
+    const origin = req.headers.origin;
+    const result = await userService.forgetPassword(req.body, origin);
     if (!result) {
       throw new AppErrorUtil(400, "Cannot send email");
     }
