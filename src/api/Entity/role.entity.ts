@@ -6,9 +6,6 @@
 //     required: true,
 //     unique: true,
 //   },
-//   toggleStatus: {
-//     type: Boolean,
-//   },
 //   createdAt: {
 //     type: Date,
 //     default: Date.now,

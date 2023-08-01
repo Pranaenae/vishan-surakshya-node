@@ -5,15 +5,9 @@ import { IProduct } from "../utils/types/product.type";
 const productRepository = datasource.getRepository(Product);
 const imageRepo = datasource.getRepository(Image);
 
-export const create = async (data: IProduct, files: any) => {
-  const {
-    user,
-    name,
-    description,
-    deliveryTime,
-    deliveryCharge,
-    deliveryAddress,
-  } = data;
+export const create = async (user: any, data: IProduct, files: any) => {
+  const { name, description, deliveryTime, deliveryCharge, deliveryAddress } =
+    data;
 
   const product = new Product();
   product.name = name;
@@ -21,7 +15,7 @@ export const create = async (data: IProduct, files: any) => {
   product.deliveryTime = deliveryTime;
   product.deliveryCharge = deliveryCharge;
   product.deliveryAddress = deliveryAddress;
-  product.user = user;
+  product.createdBy = user;
 
   const savedProduct = await productRepository.save(product);
   if (savedProduct) {
@@ -88,12 +82,12 @@ export const del = async (data: IProduct) => {
 };
 
 export const toggle = async (data: IProduct) => {
-  const { id, toggleStatus } = data;
+  const { id, status } = data;
 
   const result = await datasource
     .createQueryBuilder()
     .update(Product)
-    .set({ toggleStatus: toggleStatus })
+    .set({ status: status })
     .where("id = :id", { id })
     .execute();
   return result;

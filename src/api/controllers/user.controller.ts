@@ -1,13 +1,8 @@
 import { Request, Response } from "express";
-import logger from "../../config/logger";
-import { mailService, userService } from "../services/index.service";
+import { userService } from "../services/index.service";
 import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { IregisterUser } from "../utils/types/user.type";
-import jwt from "jsonwebtoken";
-import { User } from "../entity/user.entity";
-import moment from "moment";
-import bcrypt from "bcrypt";
 
 export const registerUser = catchAsync(
   async (req: Request<IregisterUser>, res: Response) => {
@@ -25,10 +20,7 @@ export const setPassword = catchAsync(async (req: Request, res: Response) => {
   //@ts-ignore
   const user = req.user;
   const data = req.body;
-  const test = {
-    ...data,
-    user,
-  };
+
   const result = await userService.setPassword({ ...data, user });
   if (!result) {
     throw new AppErrorUtil(400, "Error while updating password");

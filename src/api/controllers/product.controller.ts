@@ -1,23 +1,18 @@
 import { Request, Response } from "express";
-import { transactionService, productService } from "../services/index.service";
+import { productService } from "../services/index.service";
 import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { IProduct } from "../utils/types/product.type";
+import { IRequestWithUser } from "../utils/types/types";
 
 export const createProduct = catchAsync(
-  async (req: IProduct, res: Response) => {
-    const user = req.user;
-    const parameter = {
-      user,
-      ...req.body,
-    };
-
-    const result = await productService.create(parameter, req.files);
+  async (req: IRequestWithUser<any, any, IProduct, any>, res: Response) => {
+    const result = await productService.create(req.user, req.body, req.files);
 
     if (!result) {
       throw new AppErrorUtil(400, "Could not create product.");
     }
-    const link = `${req.headers.origin}/transaction/${result.id}`;
+    const link = `${req.headers.origin}/transaction/:${result.id}`;
     // const returnResult = await transactionService.logEntry({
     //   description: "placed an order",
     //   user: user,

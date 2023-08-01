@@ -33,9 +33,6 @@ export class Product extends Base {
   @Column({ name: "delivery_address" })
   deliveryAddress: string;
 
-  @Column({ name: "toggle_status", default: true })
-  toggleStatus: Boolean;
-
   @Column({
     name: "order_status",
     type: "enum",
@@ -48,12 +45,18 @@ export class Product extends Base {
   transaction: Transaction;
 
   @ManyToOne(() => User, (user) => user.product)
-  @JoinColumn({ name: "user_id" })
-  user: User;
+  buyer: User;
 
   @OneToOne(() => Litigation, (litigation) => litigation.product)
   litigation: Litigation;
 
   @OneToMany(() => Image, (image) => image.product, { eager: true })
   images: Image;
+
+  @Column({ name: "is_accepted", default: false })
+  isAccepted: boolean;
+
+  @OneToOne(() => User)
+  @JoinColumn({ name: "accepted_by" })
+  acceptedBy: User;
 }

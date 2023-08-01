@@ -67,6 +67,9 @@ export class User extends Base {
   @OneToMany(() => Transaction, (transaction) => transaction.user)
   transaction: Transaction;
 
-  @OneToMany(() => Product, (product) => product.user)
+  @OneToMany(() => Product, (product) => product.buyer)
   product: Product;
+
+  @Column({ name: "escrow_id", nullable: true })
+  escrowId: string;
 }

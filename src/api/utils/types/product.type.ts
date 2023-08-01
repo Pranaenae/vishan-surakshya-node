@@ -9,6 +9,6 @@ export interface IProduct extends Request {
   deliveryTime: Date;
   deliveryCharge: number;
   deliveryAddress: string;
-  toggleStatus: Boolean;
+  status: boolean;
   user?: any;
 }

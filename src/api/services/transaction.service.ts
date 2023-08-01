@@ -2,6 +2,7 @@ import datasource from "../../config/ormConfig";
 import { Transaction } from "../entity/transaction.entity";
 import { Product } from "../entity/product.entity";
 import { ILogoptions } from "../utils/types/log.type";
+import { IProduct } from "../utils/types/product.type";
 
 const activityRepository = datasource.getRepository(Transaction);
 const productRepository = datasource.getRepository(Product);
@@ -34,5 +35,16 @@ export const transactionByProductId = async (data: any) => {
     .getOne();
 
   console.log({ result });
+  return result;
+};
+
+export const accept = async (payload: IProduct, user: any) => {
+  const getProduct = await productRepository.findOneBy({ id: payload.id });
+  let result;
+  if (getProduct) {
+    getProduct.isAccepted = true;
+    getProduct.acceptedBy = user;
+    result = await productRepository.save(getProduct);
+  }
   return result;
 };
