@@ -39,8 +39,8 @@
 // };
 
 // export const toggle = async (data: IRole) => {
-//   const { _id, toggleStatus } = data;
+//   const { _id, status } = data;
 
-//   const result = await Role.findByIdAndUpdate(_id, { toggleStatus });
+//   const result = await Role.findByIdAndUpdate(_id, { status });
 //   return result;
 // };

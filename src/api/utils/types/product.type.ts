@@ -1,8 +1,7 @@
 import { Request } from "express";
-import mongoose, { Document } from "mongoose";
 
 export interface IProduct extends Request {
-  id: string;
+  id: number;
   name: string;
   description: string;
   image: string;
@@ -10,6 +9,6 @@ export interface IProduct extends Request {
   deliveryTime: Date;
   deliveryCharge: number;
   deliveryAddress: string;
-  toggleStatus: Boolean;
+  status: boolean;
   user?: any;
 }

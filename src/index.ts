@@ -1,18 +1,28 @@
-// import mongoose from "mongoose";
 import app from "./config/express";
 import dotenv from "dotenv";
 import logger from "./config/logger";
 import datasource from "./config/ormConfig";
+import { createServer } from "http";
+import { Server } from "socket.io";
+// import { socketConnection } from "./middlewares/socketConnection";
 
 dotenv.config();
 
-let server: any;
+const server = createServer(app);
+
+export const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+// socketConnection(io);
 
 datasource
   .initialize()
   .then(() => {
     logger.info("Connected to MySQL Server!");
-    server = app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       logger.info(`Listening to port ${process.env.PORT}`);
     });
   })

@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Activity } from "./activity.entity";
+import { Transaction } from "./transaction.entity";
 import { Base } from "./base.entity";
 import {
   UserTypeEnum,
@@ -17,33 +17,39 @@ export class User extends Base {
   email: string;
 
   @Column({ unique: true, nullable: true })
-  pan: number;
+  pan: string;
 
   @Column({ nullable: true })
   gst: string;
 
-  @Column({ nullable: true })
+  @Column({ name: "bank_name", nullable: true })
   bankName: string;
 
-  @Column({ nullable: true })
+  @Column({ name: "account_number", nullable: true })
   accountNumber: string;
 
-  @Column({ nullable: true })
+  @Column({ name: "account_holder_name", nullable: true })
   accountHolderName: string;
 
   @Column({ nullable: true })
   address: string;
 
-  @Column({ nullable: true })
+  @Column({ name: "mobile_number", nullable: true })
   mobileNumber: string;
 
   @Column({ nullable: true })
   password: string;
 
-  @Column({ type: "enum", enum: UserTypeEnum, default: UserTypeEnum.Seller })
+  @Column({
+    name: "user_type",
+    type: "enum",
+    enum: UserTypeEnum,
+    default: UserTypeEnum.Seller,
+  })
   userType: UserTypeEnum;
 
   @Column({
+    name: "email_status",
     type: "enum",
     enum: EmailStatusEnum,
     default: EmailStatusEnum.Unverified,
@@ -51,14 +57,19 @@ export class User extends Base {
   emailStatus: string;
 
   @Column({
+    name: "profile_status",
     type: "enum",
     enum: ProfileStatusEnum,
     default: ProfileStatusEnum.Completed,
   })
   profileStatus: string;
 
-  @OneToMany(() => Activity, (activity) => activity.user)
-  activity: Activity;
-  @OneToMany(() => Product, (product) => product.user)
+  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  transaction: Transaction;
+
+  @OneToMany(() => Product, (product) => product.buyer)
   product: Product;
+
+  @Column({ name: "escrow_id", nullable: true })
+  escrowId: string;
 }

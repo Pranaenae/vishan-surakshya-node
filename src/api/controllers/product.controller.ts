@@ -1,37 +1,28 @@
 import { Request, Response } from "express";
-import { activityService, productService } from "../services/index.service";
+import { productService } from "../services/index.service";
 import AppErrorUtil from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { IProduct } from "../utils/types/product.type";
+import { IRequestWithUser } from "../utils/types/types";
 
 export const createProduct = catchAsync(
-  async (req: IProduct, res: Response) => {
-    const user = req.user;
-    const parameter = {
-      user,
-      ...req.body,
-    };
-    console.log({ parameter });
-
-    const result = await productService.create(parameter, req.file);
-    console.log({ result });
-    console.log(result.id);
+  async (req: IRequestWithUser<any, any, IProduct, any>, res: Response) => {
+    const result = await productService.create(req.user, req.body, req.files);
 
     if (!result) {
       throw new AppErrorUtil(400, "Could not create product.");
     }
-    const link = `${req.protocol}://${req.hostname}/product-details?productId=${result.id}`;
-    const returnResult = await activityService.logEntry({
-      description: "placed an order",
-      user: user,
-      product: result,
-    });
+    const link = `${req.headers.origin}/transaction/:${result.id}`;
+    // const returnResult = await transactionService.logEntry({
+    //   description: "placed an order",
+    //   user: user,
+    //   product: result,
+    // });
 
     res.status(200).json({
       message: "Product created successfully.",
       result,
       link,
-      returnResult,
     });
   }
 );
