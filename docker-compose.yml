@@ -17,3 +17,4 @@ services:
     env_file: /home/stagging/surakshya/.sqlenv
     volumes:
       - /home/stagging/surakshya/data/:/var/lib/mysql
+    restart: always
