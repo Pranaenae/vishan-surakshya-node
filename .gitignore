@@ -1,5 +1,0 @@
-yarn.lock
-.env
-/node_modules
-/logs
-.sqlenv
