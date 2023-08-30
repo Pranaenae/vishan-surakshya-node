@@ -4,8 +4,8 @@ services:
     container_name: surak-back-con
     build: .
     ports:
-      - 8989:8989
-    env_file: /home/stagging/surakshya/.env
+      - 8000:8000
+    env_file: .env
     depends_on:
       - mysql
     restart: unless-stopped
@@ -14,7 +14,10 @@ services:
     container_name: mysql-con
     ports:
       - 3306:3306
-    env_file: /home/stagging/surakshya/.sqlenv
+    env_file: .sqlenv
     volumes:
-      - /home/stagging/surakshya/data/:/var/lib/mysql
+      - sql_data:/var/lib/mysql
     restart: always
+
+volumes:
+  sql_data:
